@@ -1,37 +1,30 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
 
-exports.handler = async function (event, context) {
+exports.handler = async function () {
   const apiKey = process.env.SPORTMONKS_API_KEY;
 
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "API key is missing. Check your .env file or Netlify environment variables." })
+      body: JSON.stringify({ error: "Missing SPORTMONKS_API_KEY" }),
     };
   }
 
-  const endpoint = `https://api.sportmonks.com/v3/football/livescores?api_token=${apiKey}`;
+  const url = `https://api.sportmonks.com/v3/football/livescores?api_token=${apiKey}`;
 
   try {
-    const response = await fetch(endpoint);
-    const data = await response.json();
-
-    if (data.error) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "API returned an error", details: data.error })
-      };
-    }
+    const res = await fetch(url);
+    const json = await res.json();
 
     return {
       statusCode: 200,
-      body: JSON.stringify(data)
+      body: JSON.stringify(json),
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Fetch failed", message: err.message })
+      body: JSON.stringify({ error: "Error fetching data", details: error.message }),
     };
   }
 };

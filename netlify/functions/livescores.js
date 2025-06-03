@@ -2,46 +2,25 @@ require('dotenv').config();
 const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
-  const apiKey = process.env.FOOTBALL_API_KEY;
-  const league = event.queryStringParameters.league || '';
-  const status = event.queryStringParameters.status || 'live'; // 'live', 'finished', 'upcoming'
+  const apiKey = process.env.SPORTMONKS_API_KEY;
 
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "API key is missing. Check your .env file or Netlify Environment variables." })
+      body: JSON.stringify({ error: "API key is missing. Check your .env file or Netlify environment variables." })
     };
   }
 
-  let endpoint = 'https://v3.football.api-sports.io/fixtures';
-
-  let params = new URLSearchParams();
-  if (status === 'live') {
-    params.append('live', 'all');
-  } else if (status === 'finished') {
-    params.append('status', 'FT');
-  } else if (status === 'upcoming') {
-    params.append('next', '10'); // Adjust the number as needed
-  }
-
-  if (league) {
-    params.append('league', league);
-  }
+  const endpoint = `https://api.sportmonks.com/v3/football/livescores?api_token=${apiKey}`;
 
   try {
-    const response = await fetch(`${endpoint}?${params.toString()}`, {
-      headers: {
-        'x-apisports-key': apiKey,
-        'Content-Type': 'application/json'
-      }
-    });
-
+    const response = await fetch(endpoint);
     const data = await response.json();
 
-    if (data.errors) {
+    if (data.error) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: "API returned an error", details: data.errors })
+        body: JSON.stringify({ error: "API returned an error", details: data.error })
       };
     }
 

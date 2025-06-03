@@ -1,0 +1,21 @@
+---
+layout: base.njk
+title: News
+---
+
+<div class="container">
+    <h1>All Sports News</h1>
+    <div class="news-grid">
+        {% for post in collections.news | reverse %}
+        <div class="news-widget">
+            <a href="{{ post.url }}">
+                <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
+                <div class="news-widget-content">
+                    <h3>{{ post.data.title }}</h3>
+                    <p>{{ post.data.description | truncate(100, true, "...") }}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

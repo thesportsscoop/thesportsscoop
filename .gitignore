@@ -1,0 +1,25 @@
+# Node.js dependencies
+/node_modules
+
+# Eleventy build output
+/public
+
+# macOS specific files
+.DS_Store
+
+# Log files
+*.log
+
+# npm debug logs
+npm-debug.log*
+.npm/
+.eslintcache
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local Netlify folder
+.netlify

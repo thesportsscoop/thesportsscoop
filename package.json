@@ -1,0 +1,26 @@
+{
+  "name": "the-sports-scoop",
+  "version": "1.0.0",
+  "description": "Welcome to The Sports Scoop, your ultimate destination for the latest sports news!",
+  "main": ".eleventy.js",
+  "scripts": {
+    "start": "npx eleventy --serve",
+    "build": "npx eleventy",
+    "watch": "npx eleventy --watch",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "keywords": [
+    "sports",
+    "news",
+    "eleventy",
+    "netlify-cms"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.1",
+    "dotenv": "^16.5.0",
+    "luxon": "^3.6.1",
+    "node-fetch": "^2.7.0"
+  }
+}

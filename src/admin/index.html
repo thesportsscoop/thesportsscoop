@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <script src="https://unpkg.com/netlify-cms@^2.10.192/dist/netlify-cms.js"></script>
+  <script>
+    var CMS_CONFIG = {
+      backend: {
+        name: 'git-gateway',
+        branch: 'main' // Branch to deploy from. If you're using 'master' change this.
+      },
+      media_folder: 'src/assets/uploads', // Where media files will be stored
+      public_folder: '/assets/uploads', // The public path for media files
+      collections: [
+        {
+          name: 'news',
+          label: 'News Posts',
+          folder: 'src/news',
+          create: true,
+          slug: '{{slug}}',
+          fields: [
+            { label: 'Title', name: 'title', widget: 'string' },
+            { label: 'Publish Date', name: 'date', widget: 'datetime' },
+            { label: 'Featured Image', name: 'image', widget: 'image', required: false },
+            { label: 'Description', name: 'description', widget: 'string' },
+            { label: 'Category', name: 'category', widget: 'select', options: ['football', 'basketball', 'tennis', 'boxing', 'other'] },
+            { label: 'Body', name: 'body', widget: 'markdown' }
+          ]
+        },
+        {
+          name: 'pages',
+          label: 'Pages',
+          files: [
+            {
+              label: 'About Page',
+              name: 'about',
+              file: 'src/about.njk',
+              fields: [
+                { label: 'Title', name: 'title', widget: 'string' },
+                { label: 'Body', name: 'body', widget: 'markdown' }
+              ]
+            },
+            {
+              label: 'Contact Page',
+              name: 'contact',
+              file: 'src/contact.njk',
+              fields: [
+                { label: 'Title', name: 'title', widget: 'string' },
+                { label: 'Body', name: 'body', widget: 'markdown' }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    CMS.init({ config: CMS_CONFIG });
+  </script>
+</body>
+</html>

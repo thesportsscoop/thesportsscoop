@@ -1,0 +1,19 @@
+[build]
+  command = "npx @11ty/eleventy"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "18"
+  FOOTBALL_API_KEY = "9c4fcfaa3023b4e3256953bbbd101dee"
+
+[dev]
+  command = "npx @11ty/eleventy --serve"
+  port = 8888
+  targetPort = 8080
+  publish = "public"
+  framework = "#custom"
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200

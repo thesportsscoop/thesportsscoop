@@ -1,0 +1,70 @@
+---
+layout: base.njk
+title: Live Scores
+---
+
+<section class="livescore-section">
+  <h1>⚽ Live Football Scores</h1>
+  <div>
+    <label for="league">League ID:</label>
+    <input type="text" id="league" placeholder="Enter league ID">
+    <label for="status">Status:</label>
+    <select id="status">
+      <option value="live">Live</option>
+      <option value="finished">Finished</option>
+      <option value="upcoming">Upcoming</option>
+    </select>
+    <button onclick="loadScores()">Load Scores</button>
+  </div>
+  <div id="score-list">Loading scores...</div>
+</section>
+
+<script>
+  async function loadScores() {
+    const league = document.getElementById('league').value;
+    const status = document.getElementById('status').value;
+    try {
+      const res = await fetch(`/.netlify/functions/livescores?league=${league}&status=${status}`);
+      const data = await res.json();
+      const container = document.getElementById('score-list');
+      container.innerHTML = '';
+
+      if (data.response && data.response.length > 0) {
+        data.response.forEach(match => {
+          const { home, away } = match.teams;
+          const { home: homeGoals, away: awayGoals } = match.goals;
+          const { elapsed, long } = match.fixture.status;
+
+          container.innerHTML += `
+            <div class="match">
+              <strong>${home.name}</strong> ${homeGoals} - ${awayGoals} <strong>${away.name}</strong>
+              <br><small>${elapsed ? elapsed + "'" : ''} - ${long}</small>
+            </div>
+          `;
+        });
+      } else {
+        container.innerHTML = '<p>No matches found.</p>';
+      }
+    } catch (err) {
+      document.getElementById('score-list').innerHTML = '<p>Error loading scores.</p>';
+    }
+  }
+
+  // Auto-refresh every 60 seconds
+  setInterval(loadScores, 60000);
+  // Initial load
+  loadScores();
+</script>
+
+<style>
+  .livescore-section {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  #score-list .match {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.1rem;
+  }
+</style>

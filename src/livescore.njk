@@ -5,47 +5,35 @@ title: Live Scores
 
 <section class="livescore-section">
   <h1>⚽ Live Football Scores</h1>
-  <div>
-    <label for="league">League ID:</label>
-    <input type="text" id="league" placeholder="Enter league ID">
-    <label for="status">Status:</label>
-    <select id="status">
-      <option value="live">Live</option>
-      <option value="finished">Finished</option>
-      <option value="upcoming">Upcoming</option>
-    </select>
-    <button onclick="loadScores()">Load Scores</button>
-  </div>
   <div id="score-list">Loading scores...</div>
 </section>
 
 <script>
   async function loadScores() {
-    const league = document.getElementById('league').value;
-    const status = document.getElementById('status').value;
     try {
-      const res = await fetch(`/.netlify/functions/livescores?league=${league}&status=${status}`);
+      const res = await fetch('/.netlify/functions/livescore');
       const data = await res.json();
       const container = document.getElementById('score-list');
       container.innerHTML = '';
 
-      if (data.response && data.response.length > 0) {
-        data.response.forEach(match => {
-          const { home, away } = match.teams;
-          const { home: homeGoals, away: awayGoals } = match.goals;
-          const { elapsed, long } = match.fixture.status;
+      if (data.data && data.data.length > 0) {
+        data.data.forEach(match => {
+          const home = match.participants.find(p => p.meta.location === 'home');
+          const away = match.participants.find(p => p.meta.location === 'away');
+          const time = match.time?.minute ? `${match.time.minute}'` : 'Live';
 
           container.innerHTML += `
             <div class="match">
-              <strong>${home.name}</strong> ${homeGoals} - ${awayGoals} <strong>${away.name}</strong>
-              <br><small>${elapsed ? elapsed + "'" : ''} - ${long}</small>
+              <strong>${home.name}</strong> ${home.scores.score} - ${away.scores.score} <strong>${away.name}</strong>
+              <br><small>${time}</small>
             </div>
           `;
         });
       } else {
-        container.innerHTML = '<p>No matches found.</p>';
+        container.innerHTML = '<p>No live matches at the moment.</p>';
       }
     } catch (err) {
+      console.error(err);
       document.getElementById('score-list').innerHTML = '<p>Error loading scores.</p>';
     }
   }

@@ -1,0 +1,49 @@
+backend:
+  name: git-gateway
+  branch: main # Branch to deploy from. If you're using 'master' change this.
+
+media_folder: "src/assets/uploads" # Where media files will be stored relative to the project root
+public_folder: "/assets/uploads" # The public path for media files, relative to the site root
+
+collections:
+  - name: "news"
+    label: "News Posts"
+    folder: "src/news"
+    create: true
+    slug: "{{slug}}" # Generates a slug from the title
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["football", "basketball", "tennis", "boxing", "other"] }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "pages"
+    label: "Site Pages"
+    files:
+      - label: "About Page"
+        name: "about"
+        file: "src/about.njk"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Contact Page"
+        name: "contact"
+        file: "src/contact.njk"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Terms of Use Page"
+        name: "terms_of_use"
+        file: "src/terms-of-use.njk"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Last Updated", name: "last_updated", widget: "datetime", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Privacy Policy Page"
+        name: "privacy_policy"
+        file: "src/privacy-policy.njk"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Last Updated", name: "last_updated", widget: "datetime", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }

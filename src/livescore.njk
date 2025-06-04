@@ -18,13 +18,7 @@ title: Live Football Scores
     </div>
 
     <div class="livescore-controls">
-      <button id="refresh-btn" class="refresh-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-          <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-        </svg>
-        Refresh
-      </button>
+      <button id="refresh-btn" class="refresh-btn">🔄 Refresh</button>
       <div class="auto-refresh">
         <input type="checkbox" id="auto-refresh" checked>
         <label for="auto-refresh">Auto-refresh (60s)</label>
@@ -34,28 +28,23 @@ title: Live Football Scores
 </section>
 
 <script>
-  // DOM Elements
   const scoreList = document.getElementById('score-list');
   const refreshBtn = document.getElementById('refresh-btn');
   const autoRefreshCheckbox = document.getElementById('auto-refresh');
   const lastUpdatedElement = document.getElementById('last-updated');
-  
-  // State
+
   let refreshInterval;
   const REFRESH_INTERVAL_MS = 60000;
 
-  // Format time
   const formatTime = (date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Update last updated time
   const updateLastUpdatedTime = () => {
     const now = new Date();
     lastUpdatedElement.textContent = `Last updated: ${formatTime(now)}`;
   };
 
-  // Show loading state
   const showLoading = () => {
     scoreList.innerHTML = `
       <div class="loading-state">
@@ -65,31 +54,22 @@ title: Live Football Scores
     `;
   };
 
-  // Show error state
   const showError = (error) => {
     console.error('Error loading scores:', error);
     scoreList.innerHTML = `
       <div class="error-state">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-        </svg>
-        <p>Failed to load scores. Please try again.</p>
+        <p>❌ Failed to load scores.</p>
         <p><small>${error.message || 'Unknown error'}</small></p>
         <button onclick="loadScores()" class="retry-btn">Retry</button>
       </div>
     `;
   };
 
-  // Render matches
   const renderMatches = (matches) => {
     if (!matches || matches.length === 0) {
       scoreList.innerHTML = `
         <div class="no-matches">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-          </svg>
-          <p>No live matches currently</p>
+          <p>📭 No live matches currently</p>
           <p><small>Check back later for updates</small></p>
         </div>
       `;
@@ -99,15 +79,10 @@ title: Live Football Scores
     let html = '';
     matches.forEach(match => {
       try {
-        const home = match.participants.find(p => p.meta.location === 'home');
-        const away = match.participants.find(p => p.meta.location === 'away');
-        const time = match.time?.minute ? `${match.time.minute}'` : 'Live';
-        const competition = match.league?.name || 'Unknown competition';
-
-        if (!home || !away) {
-          console.warn('Missing team data for match:', match);
-          return;
-        }
+        const home = match.home;
+        const away = match.away;
+        const time = match.time?.minute !== undefined ? `${match.time.minute}'` : 'Live';
+        const competition = match.league;
 
         html += `
           <div class="match-card">
@@ -118,11 +93,11 @@ title: Live Football Scores
             <div class="match-teams">
               <div class="team home-team">
                 <span class="team-name">${home.name}</span>
-                <span class="team-score">${home.scores?.score || '0'}</span>
+                <span class="team-score">${home.score}</span>
               </div>
               <div class="team away-team">
                 <span class="team-name">${away.name}</span>
-                <span class="team-score">${away.scores?.score || '0'}</span>
+                <span class="team-score">${away.score}</span>
               </div>
             </div>
           </div>
@@ -135,23 +110,13 @@ title: Live Football Scores
     scoreList.innerHTML = html;
   };
 
-  // Load scores from API
   const loadScores = async () => {
     showLoading();
-    
     try {
       const response = await fetch('/.netlify/functions/livescore');
-      
-      if (!response.ok) {
-        throw new Error(`Server returned ${response.status}`);
-      }
-
+      if (!response.ok) throw new Error(`Server returned ${response.status}`);
       const data = await response.json();
-      
-      if (!data || !data.data) {
-        throw new Error('Invalid data format from server');
-      }
-
+      if (!data || !data.data) throw new Error('Invalid data format from server');
       renderMatches(data.data);
       updateLastUpdatedTime();
     } catch (error) {
@@ -159,7 +124,6 @@ title: Live Football Scores
     }
   };
 
-  // Setup auto-refresh
   const setupAutoRefresh = () => {
     if (autoRefreshCheckbox.checked) {
       refreshInterval = setInterval(loadScores, REFRESH_INTERVAL_MS);
@@ -168,11 +132,9 @@ title: Live Football Scores
     }
   };
 
-  // Event Listeners
   refreshBtn.addEventListener('click', loadScores);
   autoRefreshCheckbox.addEventListener('change', setupAutoRefresh);
 
-  // Initial load
   loadScores();
   setupAutoRefresh();
 </script>
@@ -182,113 +144,81 @@ title: Live Football Scores
     max-width: 800px;
     margin: 0 auto;
     padding: 1.5rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'Segoe UI', Roboto, sans-serif;
   }
 
   .livescore-header {
     text-align: center;
-    margin-bottom: 1.5rem;
-  }
-
-  .livescore-header h1 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 1.8rem;
+    margin-bottom: 1rem;
   }
 
   .last-updated {
-    color: #7f8c8d;
     font-size: 0.9rem;
+    color: #666;
     margin-top: 0.5rem;
   }
 
   .livescore-container {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   }
 
   .score-list {
     min-height: 200px;
-    position: relative;
+    padding: 1rem;
   }
 
   .loading-state, .error-state, .no-matches {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
     text-align: center;
-  }
-
-  .loading-state p, .error-state p, .no-matches p {
-    margin: 0.5rem 0 0;
-    color: #2c3e50;
-  }
-
-  .error-state svg, .no-matches svg {
-    color: #e74c3c;
-    margin-bottom: 0.5rem;
-  }
-
-  .no-matches svg {
-    color: #7f8c8d;
+    padding: 2rem;
   }
 
   .spinner {
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    border-top: 3px solid #3498db;
     width: 24px;
     height: 24px;
+    border: 3px solid #ccc;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
     animation: spin 1s linear infinite;
-    margin-bottom: 0.5rem;
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
   }
 
   .match-card {
     padding: 1rem;
-    border-bottom: 1px solid #ecf0f1;
-  }
-
-  .match-card:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid #eee;
   }
 
   .match-header {
     display: flex;
     justify-content: space-between;
+    font-size: 0.9rem;
+    color: #888;
     margin-bottom: 0.5rem;
-    font-size: 0.8rem;
-    color: #7f8c8d;
   }
 
   .match-teams {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: bold;
   }
 
   .team {
+    width: 45%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
   }
 
   .team-name {
-    flex-grow: 1;
     text-align: left;
   }
 
   .team-score {
-    font-weight: bold;
-    min-width: 20px;
     text-align: right;
   }
 
@@ -297,58 +227,51 @@ title: Live Football Scores
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1rem;
-    background: #f8f9fa;
-    border-top: 1px solid #ecf0f1;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
   }
 
   .refresh-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     background: #3498db;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 1rem;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: background 0.2s;
   }
 
   .refresh-btn:hover {
     background: #2980b9;
   }
 
+  .retry-btn {
+    margin-top: 1rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
   .auto-refresh {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     font-size: 0.9rem;
-    color: #7f8c8d;
-  }
-
-  .retry-btn {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .retry-btn:hover {
-    background: #2980b9;
+    gap: 0.3rem;
   }
 
   @media (max-width: 600px) {
-    .livescore-section {
-      padding: 1rem;
+    .match-teams {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
-    
-    .livescore-header h1 {
-      font-size: 1.5rem;
+
+    .team {
+      width: 100%;
+      justify-content: space-between;
     }
   }
 </style>

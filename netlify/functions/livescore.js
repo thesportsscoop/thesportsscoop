@@ -1,7 +1,8 @@
+require('dotenv').config();
 const fetch = require('node-fetch');
 
 exports.handler = async function () {
-  const apiKey = process.env.SPORTMONKS_API_KEY;
+  const apiKey = process.env.API_FOOTBALL_KEY;
 
   if (!apiKey) {
     return {
@@ -10,35 +11,40 @@ exports.handler = async function () {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ error: "Missing SPORTMONKS_API_KEY" }),
+      body: JSON.stringify({ error: "Missing API_FOOTBALL_KEY" }),
     };
   }
 
-  const url = `https://api.sportmonks.com/v3/football/fixtures/upcoming?api_token=${apiKey}&include=participants,league&per_page=10`;
+  const url = `https://v3.football.api-sports.io/fixtures?live=all`;
 
   try {
-    const res = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        'x-apisports-key': apiKey
+      }
+    });
 
-    if (!res.ok) {
-      throw new Error(`API request failed with status ${res.status}`);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
     }
 
-    const data = await res.json();
+    const json = await response.json();
 
-    // Reformat to mimic livescore structure
-    const formattedData = {
-      data: data.data.map(fixture => {
-        const home = fixture.participants?.find(p => p.meta?.location === 'home');
-        const away = fixture.participants?.find(p => p.meta?.location === 'away');
-
-        return {
-          ...fixture,
-          participants: [home, away],
-          time: {
-            minute: new Date(fixture.starting_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          }
-        };
-      })
+    const formatted = {
+      data: json.response.map(fixture => ({
+        league: fixture.league.name,
+        home: {
+          name: fixture.teams.home.name,
+          score: fixture.goals.home
+        },
+        away: {
+          name: fixture.teams.away.name,
+          score: fixture.goals.away
+        },
+        time: {
+          minute: fixture.fixture.status.elapsed || 'Live'
+        }
+      }))
     };
 
     return {
@@ -47,9 +53,8 @@ exports.handler = async function () {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formattedData),
+      body: JSON.stringify(formatted),
     };
-
   } catch (error) {
     return {
       statusCode: 500,
@@ -57,7 +62,10 @@ exports.handler = async function () {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ error: "Error fetching fixtures", details: error.message }),
+      body: JSON.stringify({
+        error: "Error fetching data",
+        details: error.message
+      }),
     };
   }
 };

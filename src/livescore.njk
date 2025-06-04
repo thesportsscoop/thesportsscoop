@@ -1,90 +1,354 @@
+---
+layout: base.njk
+title: Live Football Scores
+---
+
+<section class="livescore-section">
+  <header class="livescore-header">
+    <h1>⚽ Live Football Scores</h1>
+    <div class="last-updated" id="last-updated"></div>
+  </header>
+
+  <div class="livescore-container">
+    <div id="score-list" class="score-list">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading live scores...</p>
+      </div>
+    </div>
+
+    <div class="livescore-controls">
+      <button id="refresh-btn" class="refresh-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+          <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+        </svg>
+        Refresh
+      </button>
+      <div class="auto-refresh">
+        <input type="checkbox" id="auto-refresh" checked>
+        <label for="auto-refresh">Auto-refresh (60s)</label>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script>
-  async function loadScores() {
-    const container = document.getElementById('score-list');
-    container.innerHTML = '<div class="loading">Loading scores...</div>';
+  // DOM Elements
+  const scoreList = document.getElementById('score-list');
+  const refreshBtn = document.getElementById('refresh-btn');
+  const autoRefreshCheckbox = document.getElementById('auto-refresh');
+  const lastUpdatedElement = document.getElementById('last-updated');
+  
+  // State
+  let refreshInterval;
+  const REFRESH_INTERVAL_MS = 60000;
 
-    try {
-      const res = await fetch('/.netlify/functions/livescore');
-      
-      if (!res.ok) {
-        throw new Error(`Request failed with status ${res.status}`);
-      }
+  // Format time
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
 
-      const data = await res.json();
-      container.innerHTML = '';
+  // Update last updated time
+  const updateLastUpdatedTime = () => {
+    const now = new Date();
+    lastUpdatedElement.textContent = `Last updated: ${formatTime(now)}`;
+  };
 
-      if (!data || !data.data || data.data.length === 0) {
-        container.innerHTML = '<p>No live matches at the moment.</p>';
-        return;
-      }
+  // Show loading state
+  const showLoading = () => {
+    scoreList.innerHTML = `
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading live scores...</p>
+      </div>
+    `;
+  };
 
-      data.data.forEach(match => {
-        try {
-          const home = match.participants.find(p => p.meta.location === 'home');
-          const away = match.participants.find(p => p.meta.location === 'away');
-          const time = match.time?.minute ? `${match.time.minute}'` : 'Live';
+  // Show error state
+  const showError = (error) => {
+    console.error('Error loading scores:', error);
+    scoreList.innerHTML = `
+      <div class="error-state">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
+        <p>Failed to load scores. Please try again.</p>
+        <p><small>${error.message || 'Unknown error'}</small></p>
+        <button onclick="loadScores()" class="retry-btn">Retry</button>
+      </div>
+    `;
+  };
 
-          if (!home || !away) {
-            console.warn('Missing team data for match:', match);
-            return;
-          }
-
-          const matchElement = document.createElement('div');
-          matchElement.className = 'match';
-          matchElement.innerHTML = `
-            <strong>${home.name}</strong> ${home.scores?.score || '0'} - ${away.scores?.score || '0'} <strong>${away.name}</strong>
-            <br><small>${time}</small>
-          `;
-          container.appendChild(matchElement);
-        } catch (err) {
-          console.error('Error processing match:', match, err);
-        }
-      });
-    } catch (err) {
-      console.error('Failed to load scores:', err);
-      container.innerHTML = `
-        <p class="error">Error loading scores. Please try again later.</p>
-        <button onclick="loadScores()">Retry</button>
+  // Render matches
+  const renderMatches = (matches) => {
+    if (!matches || matches.length === 0) {
+      scoreList.innerHTML = `
+        <div class="no-matches">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+          <p>No live matches currently</p>
+          <p><small>Check back later for updates</small></p>
+        </div>
       `;
+      return;
     }
-  }
+
+    let html = '';
+    matches.forEach(match => {
+      try {
+        const home = match.participants.find(p => p.meta.location === 'home');
+        const away = match.participants.find(p => p.meta.location === 'away');
+        const time = match.time?.minute ? `${match.time.minute}'` : 'Live';
+        const competition = match.league?.name || 'Unknown competition';
+
+        if (!home || !away) {
+          console.warn('Missing team data for match:', match);
+          return;
+        }
+
+        html += `
+          <div class="match-card">
+            <div class="match-header">
+              <span class="competition">${competition}</span>
+              <span class="match-time">${time}</span>
+            </div>
+            <div class="match-teams">
+              <div class="team home-team">
+                <span class="team-name">${home.name}</span>
+                <span class="team-score">${home.scores?.score || '0'}</span>
+              </div>
+              <div class="team away-team">
+                <span class="team-name">${away.name}</span>
+                <span class="team-score">${away.scores?.score || '0'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('Error rendering match:', match, err);
+      }
+    });
+
+    scoreList.innerHTML = html;
+  };
+
+  // Load scores from API
+  const loadScores = async () => {
+    showLoading();
+    
+    try {
+      const response = await fetch('/.netlify/functions/livescore');
+      
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (!data || !data.data) {
+        throw new Error('Invalid data format from server');
+      }
+
+      renderMatches(data.data);
+      updateLastUpdatedTime();
+    } catch (error) {
+      showError(error);
+    }
+  };
+
+  // Setup auto-refresh
+  const setupAutoRefresh = () => {
+    if (autoRefreshCheckbox.checked) {
+      refreshInterval = setInterval(loadScores, REFRESH_INTERVAL_MS);
+    } else {
+      clearInterval(refreshInterval);
+    }
+  };
+
+  // Event Listeners
+  refreshBtn.addEventListener('click', loadScores);
+  autoRefreshCheckbox.addEventListener('change', setupAutoRefresh);
 
   // Initial load
   loadScores();
-  // Auto-refresh every 60 seconds
-  setInterval(loadScores, 60000);
+  setupAutoRefresh();
 </script>
 
 <style>
   .livescore-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+
+  .livescore-header {
     text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .livescore-header h1 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.8rem;
+  }
+
+  .last-updated {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .livescore-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .score-list {
+    min-height: 200px;
+    position: relative;
+  }
+
+  .loading-state, .error-state, .no-matches {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 2rem;
+    text-align: center;
   }
 
-  .loading, .error {
-    color: #666;
-    padding: 1rem;
+  .loading-state p, .error-state p, .no-matches p {
+    margin: 0.5rem 0 0;
+    color: #2c3e50;
   }
 
-  #score-list .match {
+  .error-state svg, .no-matches svg {
+    color: #e74c3c;
+    margin-bottom: 0.5rem;
+  }
+
+  .no-matches svg {
+    color: #7f8c8d;
+  }
+
+  .spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 3px solid #3498db;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 0.5rem;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .match-card {
     padding: 1rem;
-    margin: 0.5rem 0;
+    border-bottom: 1px solid #ecf0f1;
+  }
+
+  .match-card:last-child {
+    border-bottom: none;
+  }
+
+  .match-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+  }
+
+  .match-teams {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .team-name {
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .team-score {
+    font-weight: bold;
+    min-width: 20px;
+    text-align: right;
+  }
+
+  .livescore-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border-top: 1px solid #ecf0f1;
+  }
+
+  .refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
     border-radius: 4px;
-    background: #f8f8f8;
-    font-size: 1.1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
   }
 
-  button {
+  .refresh-btn:hover {
+    background: #2980b9;
+  }
+
+  .auto-refresh {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+
+  .retry-btn {
     margin-top: 1rem;
     padding: 0.5rem 1rem;
-    background: #007bff;
+    background: #3498db;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background 0.2s;
   }
 
-  button:hover {
-    background: #0056b3;
+  .retry-btn:hover {
+    background: #2980b9;
+  }
+
+  @media (max-width: 600px) {
+    .livescore-section {
+      padding: 1rem;
+    }
+    
+    .livescore-header h1 {
+      font-size: 1.5rem;
+    }
   }
 </style>

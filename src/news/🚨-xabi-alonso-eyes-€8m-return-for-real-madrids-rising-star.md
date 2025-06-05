@@ -5,8 +5,7 @@ image: /assets/uploads/alonso.jpg
 description: In a move that could shake up Real Madrid's transfer strategy,
   manager Xabi Alonso is reportedly considering activating an €8 million buyback
   clause to re-sign midfielder
-category:
-  - transfers
+category:transfers
 ---
 \---
 

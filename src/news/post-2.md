@@ -4,7 +4,7 @@ title: "Basketball Team Secures Playoff Spot with Dominant Win"
 date: 2025-06-02
 image: " /assets/img/players.jpg"
 description: "The [Basketball Team Name] delivered a stunning performance, securing their spot in the playoffs with a commanding victory over their rivals..."
-category: "basketball"
+category: "betting-tips"
 ---
 
 <div class="container">

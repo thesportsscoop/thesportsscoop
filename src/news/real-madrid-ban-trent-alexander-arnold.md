@@ -1,5 +1,5 @@
 ---
-title: Real Madrid 'Ban' Trent Alexander Arnold
+title: Real Madrid Ban Trent Alexander Arnold
 date: 2025-06-05T13:25:29.205Z
 layout: post.njk
 image: /assets/uploads/c.webp

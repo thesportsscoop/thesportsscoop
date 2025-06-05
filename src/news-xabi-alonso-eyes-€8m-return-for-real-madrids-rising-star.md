@@ -1,5 +1,5 @@
 ---
-title: "**🚨 Xabi Alonso Eyes €8M Return for Real Madrid's Rising Star"
+title: "Xabi Alonso Eyes €8M Return for Real Madrid's Rising Star"
 date: 2025-06-05T10:52:35.224Z
 image: /assets/uploads/alonso.jpg
 description: In a move that could shake up Real Madrid's transfer strategy,

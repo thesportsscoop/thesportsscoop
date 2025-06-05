@@ -17,7 +17,7 @@ collections:
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Description", name: "description", widget: "string" }
       # Updated category options to match your main site tabs and existing sports categories
-      - { label: "Category", name: "category", widget: "select", options: ["general-news", "transfers", "betting-tips", "football", "basketball", "tennis", "boxing", "other"], multiple: true, required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["general-news", "transfers", "betting-tips", "football", "other"], multiple: true, required: false }
       - { label: "Body", name: "body", widget: "markdown" }
   - name: "pages"
     label: "Site Pages"

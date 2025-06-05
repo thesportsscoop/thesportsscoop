@@ -22,5 +22,8 @@
     "dotenv": "^16.5.0",
     "luxon": "^3.6.1",
     "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "node-sass": "^8.0.0"
   }
 }

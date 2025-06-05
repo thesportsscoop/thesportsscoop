@@ -2,7 +2,7 @@ require('dotenv').config();
 const fetch = require('node-fetch');
 
 exports.handler = async function () {
-  const apiKey = process.env.API_FOOTBALL_KEY;
+  const apiKey = process.env.SOCCERS_API_KEY;
 
   if (!apiKey) {
     return {
@@ -11,18 +11,15 @@ exports.handler = async function () {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ error: "Missing API_FOOTBALL_KEY" }),
+      body: JSON.stringify({ error: "Missing SOCCERS_API_KEY" }),
     };
   }
 
-  const url = `https://v3.football.api-sports.io/fixtures?live=all`;
+  // SoccersAPI live fixtures endpoint (check your API docs for exact endpoint)
+  const url = `https://api.soccersapi.com/v1/soccer/matches/live?api_token=${apiKey}`;
 
   try {
-    const response = await fetch(url, {
-      headers: {
-        'x-apisports-key': apiKey
-      }
-    });
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
@@ -30,19 +27,20 @@ exports.handler = async function () {
 
     const json = await response.json();
 
+    // Adjusted formatting based on typical SoccersAPI response structure
     const formatted = {
-      data: json.response.map(fixture => ({
-        league: fixture.league.name,
+      data: json.data.map(match => ({
+        league: match.league.name,
         home: {
-          name: fixture.teams.home.name,
-          score: fixture.goals.home
+          name: match.localteam_name,
+          score: match.localteam_score
         },
         away: {
-          name: fixture.teams.away.name,
-          score: fixture.goals.away
+          name: match.visitorteam_name,
+          score: match.visitorteam_score
         },
         time: {
-          minute: fixture.fixture.status.elapsed || 'Live'
+          minute: match.time.elapsed || 'Live'
         }
       }))
     };

@@ -1,29 +1,148 @@
 ---
 layout: base.njk
 title: Transfers
+permalink: /transfers/index.html
 ---
 
-<div class="container">
-    <h1>Latest Transfer News</h1>
-    <p>Stay updated with all the latest sports transfer rumors and confirmed deals.</p>
-    <div class="news-grid">
+<main class="container">
+  <h1 class="page-title">{{ title }}</h1>
+  <p class="page-description">Stay updated with all the latest sports transfer rumors and confirmed deals.</p>
+
+  <div class="news-grid">
+    {% set transferPostsCount = 0 %} {# Initialize a counter for transfer posts #}
+    {% for post in collections.news | reverse %} {# Loop through all news posts in reverse order (newest first) #}
+      {% if post.data.category == 'transfers' %} {# Check if the post's category is 'transfers' #}
         <div class="news-widget">
-            <a href="#">
-                <img src="https://via.placeholder.com/400x250/e4002b/ffffff?text=Transfer+Image+1" alt="Transfer News Example 1">
-                <div class="news-widget-content">
-                    <h3>Star Player Nears Mega-Money Move</h3>
-                    <p>Rumors are swirling about a blockbuster transfer for the highly-rated forward...</p>
-                </div>
-            </a>
+          <a href="{{ post.url }}">
+            {% if post.data.image %}
+              <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
+            {% else %}
+              <img src="/assets/images/placeholder.jpg" alt="Placeholder image for {{ post.data.title }}"> {# Fallback image if no specific image is set #}
+            {% endif %}
+            <div class="news-widget-content">
+              <h3>{{ post.data.title }}</h3>
+              <p>{{ post.data.description | truncate(100, true, "...") }}</p>
+              <span class="news-widget-date">{{ post.date | dateReadable }}</span>
+            </div>
+          </a>
         </div>
-        <div class="news-widget">
-            <a href="#">
-                <img src="https://via.placeholder.com/400x250/e4002b/ffffff?text=Transfer+Image+2" alt="Transfer News Example 2">
-                <div class="news-widget-content">
-                    <h3>Official: Midfielder Signs New Contract</h3>
-                    <p>The club has confirmed that their key midfielder has penned a new long-term deal...</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
+        {% set transferPostsCount = transferPostsCount + 1 %} {# Increment the counter if a transfer post is found #}
+      {% endif %}
+    {% endfor %}
+
+    {% if transferPostsCount == 0 %}
+      <p class="no-posts-message">No transfer news available at the moment. Please check back later!</p>
+    {% endif %}
+  </div>
+</main>
+
+<style>
+  /* Page Title & Description Styling */
+  .page-title {
+    text-align: center;
+    color: var(--primary-color); /* Assuming --primary-color is red */
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 2.5em;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5em;
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* to center the inline-block element */
+  }
+
+  .page-description {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--dark-grey);
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Message for no posts */
+  .no-posts-message {
+    text-align: center;
+    font-style: italic;
+    color: var(--medium-grey);
+    padding: 2em;
+    border: 1px dashed var(--medium-grey);
+    border-radius: 8px;
+    margin-top: 30px;
+  }
+
+  /* news-grid and news-widget styles (assuming these are in your global style.css) */
+  /* If not, ensure these basic styles are present in style.css or copied into this page's <style> block */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .news-widget {
+    background-color: var(--light-grey);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .news-widget:hover {
+    transform: translateY(-5px);
+  }
+
+  .news-widget a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .news-widget img {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover;
+    display: block;
+  }
+
+  .news-widget-content {
+    padding: 15px;
+  }
+
+  .news-widget h3 {
+    margin-top: 0;
+    color: var(--dark-blue); /* Assuming --dark-blue is a suitable dark color */
+    font-size: 1.3em;
+    line-height: 1.4;
+    min-height: 3.2em; /* Ensure consistent height for titles */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .news-widget p {
+    font-size: 0.95em;
+    color: var(--dark-grey);
+    line-height: 1.5;
+    min-height: 4.5em; /* Ensure consistent height for descriptions */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .news-widget-date {
+    display: block;
+    font-size: 0.85em;
+    color: var(--medium-grey);
+    margin-top: 10px;
+    text-align: right;
+  }
+</style>

@@ -5,6 +5,7 @@ layout: post.njk
 image: /assets/uploads/2188892302.0.jpg
 description: Frenkie de Jong has reportedly taken decisive action regarding his
   representation by instructing his legal team to terminate his contract
+category: transfers
 ---
 <!--StartFragment-->
 

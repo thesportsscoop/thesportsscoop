@@ -9,9 +9,12 @@ category:
   - transfers
   - general-news
 ---
-<!--StartFragment-->
+- - -
 
+layout: post.njk
+category: "transfer"
 
+- - -
 
 In a move that could shake up Real Madrid's transfer strategy, manager Xabi Alonso is reportedly considering activating an €8 million buyback clause to re-sign midfielder Nico Paz from Como. According to transfer expert Fabrizio Romano, the decision is expected imminently.
 

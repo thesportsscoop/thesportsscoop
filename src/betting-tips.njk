@@ -1,25 +1,152 @@
 ---
 layout: base.njk
 title: Betting Tips
+permalink: /betting-tips/index.html
 ---
 
-<div class="container">
-    <h1>Daily Betting Tips</h1>
-    <p>Expert analysis and predictions to help you with your sports betting strategies.</p>
-    <div class="betting-tips-grid">
-        <div class="tip-card">
-            <h3>Football: Premier League Match</h3>
-            <p><strong>Match:</strong> Manchester Utd vs Liverpool</p>
-            <p><strong>Tip:</strong> Over 2.5 Goals</p>
-            <p><strong>Odds:</strong> 1.80</p>
-            <p class="tip-reason">Both teams have strong attacking lineups and a history of high-scoring games.</p>
-        </div>
-        <div class="tip-card">
-            <h3>Basketball: NBA Game</h3>
-            <p><strong>Match:</strong> Lakers vs Warriors</p>
-            <p><strong>Tip:</strong> Lakers -5.5 Handicap</p>
-            <p><strong>Odds:</strong> 1.90</p>
-            <p class="tip-reason">Lakers are in good form and playing at home, with a strong defensive record.</p>
-        </div>
+<main class="container">
+    <h1 class="page-title">{{ title }}</h1>
+    <p class="page-description">Expert analysis and predictions to help you with your sports betting strategies.</p>
+
+    <div class="news-grid"> {# Using news-grid for consistent styling #}
+        {% set tipsCount = 0 %} {# Initialize a counter for tips #}
+        {% for post in collections.news | reverse %} {# Loop through all news posts, newest first #}
+            {# Check if 'betting-tips' is in the post's category array.
+               This also gracefully handles cases where 'category' might still be a single string,
+               though it's best to update all posts to use array format. #}
+            {% if post.data.category and ('betting-tips' in post.data.category or (post.data.category is string and post.data.category == 'betting-tips')) %}
+                <div class="news-widget"> {# Using news-widget for consistent styling #}
+                    <a href="{{ post.url }}">
+                        {% if post.data.image %}
+                            <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
+                        {% else %}
+                            <img src="/assets/images/placeholder.jpg" alt="Placeholder image for {{ post.data.title }}"> {# Fallback image #}
+                        {% endif %}
+                        <div class="news-widget-content">
+                            <h3>{{ post.data.title }}</h3>
+                            <p>{{ post.data.description | truncate(100, true, "...") }}</p>
+                            <span class="news-widget-date">{{ post.date | dateReadable }}</span>
+                        </div>
+                    </a>
+                </div>
+                {% set tipsCount = tipsCount + 1 %} {# Increment the counter #}
+            {% endif %}
+        {% endfor %}
+
+        {% if tipsCount == 0 %}
+            <p class="no-posts-message">No betting tips available at the moment. Please check back later!</p>
+        {% endif %}
     </div>
-</div>
+</main>
+
+<style>
+    /* Page Title & Description Styling (Copied for consistency) */
+    .page-title {
+        text-align: center;
+        color: var(--primary-color); /* Assuming --primary-color is red */
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 2.5em;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 0.5em;
+        display: inline-block;
+        width: auto;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block; /* to center the inline-block element */
+    }
+
+    .page-description {
+        text-align: center;
+        font-size: 1.1em;
+        color: var(--dark-grey);
+        margin-bottom: 3rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Message for no posts */
+    .no-posts-message {
+        text-align: center;
+        font-style: italic;
+        color: var(--medium-grey);
+        padding: 2em;
+        border: 1px dashed var(--medium-grey);
+        border-radius: 8px;
+        margin-top: 30px;
+        grid-column: 1 / -1; /* Make it span all columns in a grid */
+    }
+
+    /* News Grid and Widget styles (assuming these are in your global style.css) */
+    /* If not, ensure these basic styles are present in style.css or copied into this page's <style> block */
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .news-widget {
+        background-color: var(--secondary-color); /* Use secondary color for card background */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .news-widget:hover {
+        transform: translateY(-5px);
+    }
+
+    .news-widget a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .news-widget img {
+        width: 100%;
+        height: 200px; /* Fixed height for consistency */
+        object-fit: cover;
+        display: block;
+    }
+
+    .news-widget-content {
+        padding: 15px;
+    }
+
+    .news-widget h3 {
+        margin-top: 0;
+        color: var(--primary-color); /* Use primary color for headings */
+        font-size: 1.3em;
+        line-height: 1.4;
+        min-height: 3.2em; /* Ensure consistent height for titles */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .news-widget p {
+        font-size: 0.95em;
+        color: var(--dark-grey);
+        line-height: 1.5;
+        min-height: 4.5em; /* Ensure consistent height for descriptions */
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .news-widget-date {
+        display: block;
+        font-size: 0.85em;
+        color: var(--medium-grey);
+        margin-top: 10px;
+        text-align: right;
+    }
+</style>

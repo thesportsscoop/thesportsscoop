@@ -7,7 +7,6 @@ description: In a move that could shake up Real Madrid's transfer strategy,
   clause to re-sign midfielder
 category:
   - transfers
-  - general-news
 ---
 \---
 

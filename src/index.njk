@@ -5,9 +5,15 @@ title: Home
 
 <div class="container">
     <h1>Latest Sports News</h1>
+    
     <section class="latest-news">
         <div class="news-grid">
-            {% for post in collections.news | reverse | limit(4) %}
+            {% set filteredPosts = collections.news | reverse | reject(post => 
+                (post.data.category is string and post.data.category == "betting-tips") or
+                (post.data.category is iterable and post.data.category.includes("betting-tips"))
+            ) | limit(4) %}
+
+            {% for post in filteredPosts %}
             <div class="news-widget">
                 <a href="{{ post.url }}">
                     <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
@@ -25,7 +31,7 @@ title: Home
         <h2>Football News</h2>
         <div class="news-grid">
             {% for post in collections.news | reverse %}
-                {% if post.data.category == "football" %}
+                {% if post.data.category == "football" or (post.data.category is iterable and post.data.category.includes("football")) %}
                 <div class="news-widget">
                     <a href="{{ post.url }}">
                         <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
@@ -44,7 +50,7 @@ title: Home
         <h2>Basketball News</h2>
         <div class="news-grid">
             {% for post in collections.news | reverse %}
-                {% if post.data.category == "basketball" %}
+                {% if post.data.category == "basketball" or (post.data.category is iterable and post.data.category.includes("basketball")) %}
                 <div class="news-widget">
                     <a href="{{ post.url }}">
                         <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
@@ -59,4 +65,4 @@ title: Home
         </div>
     </section>
 
-    </div>
+</div>

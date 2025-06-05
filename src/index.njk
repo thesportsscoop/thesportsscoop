@@ -8,23 +8,27 @@ title: Home
     
     <section class="latest-news">
         <div class="news-grid">
-            {% set filteredPosts = collections.news | reverse | reject(post => 
-                (post.data.category and (
-                    (post.data.category is string and post.data.category == "betting-tips") or
-                    (post.data.category is iterable and post.data.category.includes("betting-tips"))
-                ))
-            ) | limit(4) %}
+            {% set filteredPosts = collections.news 
+                | reverse 
+                | reject(post => 
+                    (post.data and post.data.category is string and post.data.category == "betting-tips") or
+                    (post.data and post.data.category is iterable and post.data.category.includes("betting-tips"))
+                ) 
+                | limit(4) 
+            %}
 
             {% for post in filteredPosts %}
+            {% if post.data %}
             <div class="news-widget">
                 <a href="{{ post.url }}">
-                    <img src="{{ post.data.image | default('/placeholder.jpg') }}" alt="{{ post.data.title }}">
+                    <img src="{{ post.data.image or '/placeholder.jpg' }}" alt="{{ post.data.title or 'No title' }}">
                     <div class="news-widget-content">
-                        <h3>{{ post.data.title }}</h3>
+                        <h3>{{ post.data.title or 'Untitled' }}</h3>
                         <p>{{ post.data.description | truncate(100, true, "...") }}</p>
                     </div>
                 </a>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
     </section>
@@ -33,15 +37,12 @@ title: Home
         <h2>Football News</h2>
         <div class="news-grid">
             {% for post in collections.news | reverse %}
-                {% if post.data.category and (
-                    post.data.category == "football" or 
-                    (post.data.category is iterable and post.data.category.includes("football"))
-                ) %}
+                {% if post.data and (post.data.category == "football" or (post.data.category is iterable and post.data.category.includes("football"))) %}
                 <div class="news-widget">
                     <a href="{{ post.url }}">
-                        <img src="{{ post.data.image | default('/placeholder.jpg') }}" alt="{{ post.data.title }}">
+                        <img src="{{ post.data.image or '/placeholder.jpg' }}" alt="{{ post.data.title or 'No title' }}">
                         <div class="news-widget-content">
-                            <h3>{{ post.data.title }}</h3>
+                            <h3>{{ post.data.title or 'Untitled' }}</h3>
                             <p>{{ post.data.description | truncate(100, true, "...") }}</p>
                         </div>
                     </a>
@@ -55,15 +56,12 @@ title: Home
         <h2>Basketball News</h2>
         <div class="news-grid">
             {% for post in collections.news | reverse %}
-                {% if post.data.category and (
-                    post.data.category == "basketball" or 
-                    (post.data.category is iterable and post.data.category.includes("basketball"))
-                ) %}
+                {% if post.data and (post.data.category == "basketball" or (post.data.category is iterable and post.data.category.includes("basketball"))) %}
                 <div class="news-widget">
                     <a href="{{ post.url }}">
-                        <img src="{{ post.data.image | default('/placeholder.jpg') }}" alt="{{ post.data.title }}">
+                        <img src="{{ post.data.image or '/placeholder.jpg' }}" alt="{{ post.data.title or 'No title' }}">
                         <div class="news-widget-content">
-                            <h3>{{ post.data.title }}</h3>
+                            <h3>{{ post.data.title or 'Untitled' }}</h3>
                             <p>{{ post.data.description | truncate(100, true, "...") }}</p>
                         </div>
                     </a>

@@ -21,7 +21,8 @@
     "@11ty/eleventy": "^3.1.1",
     "dotenv": "^16.5.0",
     "luxon": "^3.6.1",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "node-sass": "^8.0.0"

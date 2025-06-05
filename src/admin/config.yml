@@ -1,9 +1,9 @@
 backend:
   name: git-gateway
-  branch: main # Branch to deploy from. If you're using 'master' change this.
+  branch: main # Branch to deploy from
 
 media_folder: "src/assets/uploads" # Where media files will be stored relative to the project root
-public_folder: "/assets/uploads" # The public path for media files, relative to the site root
+public_folder: "/assets/uploads"    # The public path for media files, relative to the site root
 
 collections:
   - name: "news"
@@ -14,11 +14,18 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Publish Date", name: "date", widget: "datetime" }
+
+      # Adds layout: post.njk automatically in the front matter
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post.njk" }
+
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Description", name: "description", widget: "string" }
-      # Updated category options to match your main site tabs and existing sports categories
-      - { label: "Category", name: "category", widget: "select", options: ["general-news", "transfers", "betting-tips", "football", "other"], multiple: true, required: false }
+
+      # Make category a single string
+      - { label: "Category", name: "category", widget: "select", options: ["general-news", "transfers", "betting-tips", "football", "other"], multiple: false, required: false }
+
       - { label: "Body", name: "body", widget: "markdown" }
+
   - name: "pages"
     label: "Site Pages"
     files:
@@ -28,12 +35,14 @@ collections:
         fields:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Body", name: "body", widget: "markdown" }
+
       - label: "Contact Page"
         name: "contact"
         file: "src/contact.njk"
         fields:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Body", name: "body", widget: "markdown" }
+
       - label: "Terms of Use Page"
         name: "terms_of_use"
         file: "src/terms-of-use.njk"
@@ -41,6 +50,7 @@ collections:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Last Updated", name: "last_updated", widget: "datetime", required: false }
           - { label: "Body", name: "body", widget: "markdown" }
+
       - label: "Privacy Policy Page"
         name: "privacy_policy"
         file: "src/privacy-policy.njk"
@@ -48,5 +58,3 @@ collections:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Last Updated", name: "last_updated", widget: "datetime", required: false }
           - { label: "Body", name: "body", widget: "markdown" }
-  # The 'tips' collection has been removed from here. All post-like content
-  # will now be managed under the 'news' collection using the 'category' field.

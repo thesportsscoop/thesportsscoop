@@ -7,7 +7,15 @@ permalink: /index.html
 <main class="container">
     <h1 class="page-title">Welcome to The Sports Scoop!</h1>
     <p class="page-description">Your ultimate source for the freshest sports news, insights, and analysis from across the globe. Dive into the latest headlines below:</p>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK0L8P5WQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-ZK0L8P5WQM');
+</script>
     <div class="news-grid">
         {# Loop through all news posts in reverse order (newest first) #}
         {% for post in collections.news | reverse %}

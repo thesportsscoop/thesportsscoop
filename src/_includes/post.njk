@@ -7,7 +7,7 @@ permalink: /news/{{ title | slug }}.html
   <header>
     <h1>{{ title }}</h1>
     <p class="post-meta">
-      Published on 
+      Published on
       <time datetime="{{ date | dateIso }}">
         {{ date | dateReadable }}
       </time>
@@ -16,7 +16,7 @@ permalink: /news/{{ title | slug }}.html
 
   {% if image %}
     <figure>
-      <img src="{{ image }}" alt="{{ image_alt }}" class="post-image-detail">
+      <img src="{{ image }}" alt="{{ image_alt if image_alt else title }}" class="post-image-detail">
       {% if image_alt %}
         <figcaption>{{ image_alt }}</figcaption>
       {% endif %}
@@ -30,28 +30,28 @@ permalink: /news/{{ title | slug }}.html
   <footer class="post-footer" style="margin-left: 15px;">
     <h2>Share this post</h2>
     <div class="share-buttons">
-      <a 
-        href="https://twitter.com/intent/tweet?url={{ page.url | absoluteUrl }}&text={{ title | urlencode }}" 
+      <a
+        href="https://twitter.com/intent/tweet?url={{ page.url | absoluteUrl }}&text={{ title | urlencode }}"
         class="share-btn twitter"
-        target="_blank" 
+        target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on Twitter"
       >
         Twitter
       </a>
-      <a 
-        href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absoluteUrl }}" 
+      <a
+        href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absoluteUrl }}"
         class="share-btn facebook"
-        target="_blank" 
+        target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on Facebook"
       >
         Facebook
       </a>
-      <a 
-        href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absoluteUrl }}&title={{ title | urlencode }}" 
+      <a
+        href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absoluteUrl }}&title={{ title | urlencode }}"
         class="share-btn linkedin"
-        target="_blank" 
+        target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on LinkedIn"
       >
@@ -62,17 +62,17 @@ permalink: /news/{{ title | slug }}.html
     <h2>Share Your View</h2>
     <form id="comment-form" class="comment-form">
       <div class="form-group">
-        <input 
-          type="text" 
-          id="comment-name" 
-          placeholder="Your name" 
-          required 
+        <input
+          type="text"
+          id="comment-name"
+          placeholder="Your name"
+          required
         />
       </div>
       <div class="form-group">
-        <textarea 
-          id="comment-message" 
-          placeholder="Write your comment..." 
+        <textarea
+          id="comment-message"
+          placeholder="Write your comment..."
           required
         ></textarea>
       </div>
@@ -82,6 +82,51 @@ permalink: /news/{{ title | slug }}.html
       <!-- Dynamically added comments will appear here -->
     </div>
   </footer>
+
+  <section class="related-stories-section container">
+    <h2>Related Stories</h2>
+    <div class="news-grid">
+      {% set currentPostCategory = category %} {# Get the category of the current post #}
+      {% set currentPostUrl = page.url %} {# Get the URL of the current post #}
+      {% set relatedPostsCount = 0 %} {# Initialize a counter for related posts #}
+
+      {% for relatedPost in collections.news | reverse %} {# Loop through all news posts #}
+        {# Check if the post's category array includes ANY of the current post's categories
+           AND if it's not the current post itself. #}
+        {% if relatedPost.data.category and relatedPost.url != currentPostUrl %}
+          {% set commonCategories = false %}
+          {% for cat in relatedPost.data.category %}
+            {% if cat in currentPostCategory %}
+              {% set commonCategories = true %}
+            {% endif %}
+          {% endfor %}
+
+          {% if commonCategories %}
+            {% if relatedPostsCount < 4 %} {# Limit to 4 related posts #}
+              <div class="news-widget">
+                <a href="{{ relatedPost.url }}">
+                    {% if relatedPost.data.image %}
+                        <img src="{{ relatedPost.data.image }}" alt="{{ relatedPost.data.title }}"> {# Use title for alt if specific alt not available #}
+                    {% else %}
+                        <img src="/assets/images/placeholder.jpg" alt="Placeholder for {{ relatedPost.data.title }}">
+                    {% endif %}
+                    <div class="news-widget-content">
+                        <h3>{{ relatedPost.data.title }}</h3>
+                        <p>{{ relatedPost.data.description | truncate(100, true, "...") }}</p>
+                    </div>
+                </a>
+              </div>
+              {% set relatedPostsCount = relatedPostsCount + 1 %} {# Increment the counter #}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% if relatedPostsCount == 0 %}
+        <p>No related stories found in this category.</p>
+      {% endif %}
+    </div>
+  </section>
 </article>
 
 <style>
@@ -195,6 +240,27 @@ permalink: /news/{{ title | slug }}.html
     background: #f8f8f8;
     border-radius: 4px;
   }
+
+  /* Related Stories Section Styling */
+  .related-stories-section {
+      margin-top: 50px;
+      margin-bottom: 50px;
+      padding: 30px;
+      background-color: var(--secondary-color); /* White background */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .related-stories-section h2 {
+      color: var(--primary-color); /* Red heading */
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 2em;
+  }
+
+  /* The .news-grid and .news-widget styles from style.css will apply here */
 </style>
 
 <script>

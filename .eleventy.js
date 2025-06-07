@@ -6,6 +6,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.addPassthroughCopy("src/ads.txt");
   eleventyConfig.addPassthroughCopy("src/google106c937e23b2632b.html"); // Google site verification file
+  eleventyConfig.addPassthroughCopy("src/ads.txt"); // NEW: Pass through ads.txt
 
   // Add a custom collection for news posts
   eleventyConfig.addCollection("news", function(collectionApi) {

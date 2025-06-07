@@ -1,5 +1,5 @@
 ---
-title: Nico Williams' Future Settled by Barcelona
+title: Nico Williams Future Settled by Barcelona
 date: 2025-06-07T09:14:04.187Z
 layout: post.njk
 image: /assets/uploads/maxresdefault.jpg

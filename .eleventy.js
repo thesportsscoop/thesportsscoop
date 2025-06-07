@@ -1,12 +1,11 @@
-const { DateTime } = require("luxon"); // NEW: Import Luxon for advanced date handling
+const { DateTime } = require("luxon"); // Import Luxon for advanced date handling
 
 module.exports = function(eleventyConfig) {
   // Pass-through files
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/admin");
-  eleventyConfig.addPassthroughCopy("src/ads.txt");
+  eleventyConfig.addPassthroughCopy("src/ads.txt"); // Pass through ads.txt
   eleventyConfig.addPassthroughCopy("src/google106c937e23b2632b.html"); // Google site verification file
-  eleventyConfig.addPassthroughCopy("src/ads.txt"); // NEW: Pass through ads.txt
 
   // Add a custom collection for news posts
   eleventyConfig.addCollection("news", function(collectionApi) {

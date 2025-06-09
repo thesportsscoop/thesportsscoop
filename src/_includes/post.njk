@@ -13,6 +13,12 @@ permalink: /news/{{ title | slug }}.html
       </time>
     </p>
   </header>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK0L8P5WQM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
   {% if image %}
     <figure>

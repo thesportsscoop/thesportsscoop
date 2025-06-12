@@ -8,15 +8,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/google106c937e23b2632b.html"); // Google site verification file
   eleventyConfig.addPassthroughCopy("robots.txt"); // 👈 important
 
-  return {
-    dir: {
-      input: "src",
-      output: "_site"
-    }
-  };
-};
-  
-  // Add a custom collection for news posts
+   // Add a custom collection for news posts
   eleventyConfig.addCollection("news", function(collectionApi) {
     return collectionApi.getFilteredByGlob("src/news/*.md");
   });

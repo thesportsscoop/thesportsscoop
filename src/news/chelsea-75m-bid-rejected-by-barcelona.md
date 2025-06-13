@@ -2,7 +2,7 @@
 title: Chelsea 75m Bid Rejected By Barcelona
 date: 2025-06-07T08:53:54.881Z
 layout: post.njk
-image: /assets/uploads/vllkytruncie55hvg.jpeg
+image: /assets/uploads/image_fx-4-.jpg
 description: Chelsea's ambitious attempt to sign Barcelona midfielder Fermin
   Lopez has been rebuffed by the Catalan club. The Blues proposed a deal valued
   at approximately £60 million, which included their forward Christopher Nkunku

@@ -2,7 +2,7 @@
 title: Portugal Head Coach Makes Important Verdict on Ronaldo Jr.
 date: 2025-06-05T13:31:06.323Z
 layout: post.njk
-image: ""
+image: /assets/uploads/ronaldo-jr.avif
 description: Cristiano Ronaldo Jr. recently made his debut for Portugal's U15
   national team, marking a significant step in his budding football career
 category: general-news

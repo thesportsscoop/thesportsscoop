@@ -2,7 +2,7 @@
 title: Nico Williams Future Settled by Barcelona
 date: 2025-06-07T09:14:04.187Z
 layout: post.njk
-image: /assets/uploads/maxresdefault.jpg
+image: ""
 description: Williams, a standout performer for Spain during their Euro 2024
   triumph, had been linked with a move to Camp Nou
 category: transfers

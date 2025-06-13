@@ -2,7 +2,7 @@
 title: Real Madrid Makes Decision On Victor Osimhen Amidst Fierce Competition
 date: 2025-06-07T10:34:44.110Z
 layout: post.njk
-image: /assets/uploads/two-images-collage-2495-victor-osimhen-xabi-alonso-1.jpg
+image: /assets/uploads/image_fx-3-.jpg
 description: Real Madrid's newly appointed manager, Xabi Alonso, has reportedly
   identified Victor Osimhen as a prime target to spearhead the club's attack
 category: transfers

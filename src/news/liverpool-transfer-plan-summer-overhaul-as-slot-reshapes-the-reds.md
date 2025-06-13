@@ -2,7 +2,7 @@
 title: Liverpool Transfer Plan; Summer Overhaul as Slot Reshapes the Reds
 date: 2025-06-05T13:48:32.270Z
 layout: post.njk
-image: /assets/uploads/liverpool-transfer-priorities.jpg.webp
+image: ""
 description: Liverpool are poised for a transformative summer under manager Arne
   Slot, with significant moves both in and out of Anfield.
 category: transfers

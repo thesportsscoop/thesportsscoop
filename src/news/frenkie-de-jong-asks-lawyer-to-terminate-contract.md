@@ -2,7 +2,7 @@
 title: Frenkie de Jong asks lawyer to terminate contract
 date: 2025-06-05T13:39:57.478Z
 layout: post.njk
-image: /assets/uploads/2188892302.0.jpg
+image: /assets/uploads/image_fx-5-.jpg
 description: Frenkie de Jong has reportedly taken decisive action regarding his
   representation by instructing his legal team to terminate his contract
 category: transfers

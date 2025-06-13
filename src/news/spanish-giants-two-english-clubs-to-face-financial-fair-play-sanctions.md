@@ -2,7 +2,7 @@
 title: Spanish Giants, Two English Clubs to Face Financial Fair Play Sanctions
 date: 2025-06-05T13:35:03.352Z
 layout: post.njk
-image: /assets/uploads/finfairplay.png
+image: /assets/uploads/9155096463_2a2404f60f_b.jpg
 description: "UEFA Cracks Down: Barcelona, Chelsea, and Aston Villa Face
   Financial Fair Play Sanctions"
 category: general-news

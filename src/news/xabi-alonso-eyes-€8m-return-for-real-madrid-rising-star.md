@@ -2,7 +2,7 @@
 title: Xabi Alonso Eyes €8M Return for Real Madrid Rising Star
 date: 2025-06-05T11:34:25.249Z
 layout: post.njk
-image: /assets/uploads/alonso.jpg
+image: /assets/uploads/los_caminos_del_fútbol._xabi_alonso_-39666777934-_-cropped-.jpg
 description: In a move that could shake up Real Madrid's transfer strategy,
   manager Xabi Alonso is reportedly considering activating an €8 million buyback
   clause to re-sign midfielder

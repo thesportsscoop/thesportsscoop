@@ -2,7 +2,7 @@
 title: Portuguese Winger Set to Join Barcelona
 date: 2025-06-07T10:24:29.319Z
 layout: post.njk
-image: /assets/uploads/gettyimages-2162009238.jpg.webp
+image: /assets/uploads/flick.jpg
 description: Barcelona are on the verge of signing 16-year-old Portuguese winger
   Cardoso Varela, a highly regarded talent emerging from FC Porto's youth
   academy

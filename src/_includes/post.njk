@@ -1,108 +1,70 @@
----
-layout: base.njk
-permalink: /news/{{ title | slug }}.html
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Ezoic Privacy Scripts -->
+  <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
+  <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
 
-<article class="post">
-  <header>
-    <h1>{{ title }}</h1>
-    <p class="post-meta">
-      Published on
-      <time datetime="{{ date | dateIso }}">
-        {{ date | dateReadable }}
-      </time>
-    </p>
-  </header>
+  <!-- Ezoic Header Script -->
+  <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+  <script>
+    window.ezstandalone = window.ezstandalone || {};
+    ezstandalone.cmd = ezstandalone.cmd || [];
+  </script>
 
-  {% if image %}
-    <figure>
-      <img src="{{ image }}" alt="{{ image_alt if image_alt else title }}" class="post-image-detail">
-      {% if image_alt %}
-        <figcaption>{{ image_alt }}</figcaption>
-      {% endif %}
-    </figure>
-  {% endif %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - The Sports Scoop</title>
 
-  <!-- Ezoic Ad Placeholder: In-article ad -->
-  <div id="ezoic-pub-ad-placeholder-103" style="margin: 30px 0;"></div>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" href="/assets/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <div class="post-content">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK0L8P5WQM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-ZK0L8P5WQM');
+  </script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9374407582799127" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  {% include "header.njk" %}
+
+  <!-- Ezoic Placeholder: Top Banner (ID: 118) -->
+  <div id="ezoic-pub-ad-placeholder-118" style="margin: 20px 0;"></div>
+
+  <main class="post-content">
+    <!-- Ezoic Placeholder: Pre-Content (ID: 114) -->
+    <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
+
     {{ content | safe }}
-  </div>
 
-  <footer class="post-footer" style="margin-left: 15px;">
-    <!-- Share + Comment Section (unchanged) -->
-    <h2>Share this post</h2>
-    <div class="share-buttons">
-      <a href="https://twitter.com/intent/tweet?url={{ page.url | absoluteUrl }}&text={{ title | urlencode }}" class="share-btn twitter" target="_blank" rel="noopener noreferrer">Twitter</a>
-      <a href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absoluteUrl }}" class="share-btn facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absoluteUrl }}&title={{ title | urlencode }}" class="share-btn linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-    </div>
+    <!-- Ezoic Placeholder: Mid-Content (ID: 110) -->
+    <div id="ezoic-pub-ad-placeholder-110" style="margin: 40px 0;"></div>
 
-    <h2>Share Your View</h2>
-    <form id="comment-form" class="comment-form">
-      <div class="form-group">
-        <input type="text" id="comment-name" placeholder="Your name" required />
-      </div>
-      <div class="form-group">
-        <textarea id="comment-message" placeholder="Write your comment..." required></textarea>
-      </div>
-      <button type="submit" class="comment-submit">Post Comment</button>
-    </form>
-    <div id="comment-list" class="comment-list"></div>
-  </footer>
+    <!-- Comments or related section may follow here -->
 
-  <!-- Related Stories Section (unchanged) -->
-  <section class="related-stories-section container">
-    <h2>Related Stories</h2>
-    <div class="news-grid">
-      {% set currentPostCategory = category %}
-      {% set currentPostUrl = page.url %}
-      {% set relatedPostsCount = 0 %}
-      {% for relatedPost in collections.news | reverse %}
-        {% if relatedPost.data.category and relatedPost.url != currentPostUrl %}
-          {% set commonCategories = false %}
-          {% for cat in relatedPost.data.category %}
-            {% if cat in currentPostCategory %}
-              {% set commonCategories = true %}
-            {% endif %}
-          {% endfor %}
-          {% if commonCategories and relatedPostsCount < 4 %}
-            <div class="news-widget">
-              <a href="{{ relatedPost.url }}">
-                {% if relatedPost.data.image %}
-                  <img src="{{ relatedPost.data.image }}" alt="{{ relatedPost.data.title }}">
-                {% else %}
-                  <img src="/assets/images/placeholder.jpg" alt="Placeholder for {{ relatedPost.data.title }}">
-                {% endif %}
-                <div class="news-widget-content">
-                  <h3>{{ relatedPost.data.title }}</h3>
-                  <p>{{ relatedPost.data.description | truncate(100, true, "...") }}</p>
-                </div>
-              </a>
-            </div>
-            {% set relatedPostsCount = relatedPostsCount + 1 %}
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-      {% if relatedPostsCount == 0 %}
-        <p>No related stories found in this category.</p>
-      {% endif %}
-    </div>
-  </section>
-</article>
+    <!-- Ezoic Placeholder: Post-Content (Another 114) -->
+    <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
+  </main>
 
-<script>
-  document.getElementById('comment-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('comment-name').value.trim();
-    const message = document.getElementById('comment-message').value.trim();
-    if (name && message) {
-      const commentList = document.getElementById('comment-list');
-      const commentDiv = document.createElement('div');
-      commentDiv.innerHTML = `<p><strong>${name}</strong></p><p>${message}</p><small>${new Date().toLocaleString()}</small>`;
-      commentList.prepend(commentDiv);
-      this.reset();
-    }
-  });
-</script>
+  <!-- Ezoic Placeholder: Bottom Ad (ID: 103) -->
+  <div id="ezoic-pub-ad-placeholder-103" style="margin: 40px 0;"></div>
+
+  {% include "footer.njk" %}
+
+  <script>
+    ezstandalone.cmd.push(function () {
+      ezstandalone.showAds(114, 118, 103, 110);
+    });
+  </script>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

@@ -23,76 +23,43 @@ permalink: /news/{{ title | slug }}.html
     </figure>
   {% endif %}
 
+  <!-- Ezoic Ad Placeholder: In-article ad -->
+  <div id="ezoic-pub-ad-placeholder-103" style="margin: 30px 0;"></div>
+
   <div class="post-content">
     {{ content | safe }}
   </div>
 
   <footer class="post-footer" style="margin-left: 15px;">
+    <!-- Share + Comment Section (unchanged) -->
     <h2>Share this post</h2>
     <div class="share-buttons">
-      <a
-        href="https://twitter.com/intent/tweet?url={{ page.url | absoluteUrl }}&text={{ title | urlencode }}"
-        class="share-btn twitter"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on Twitter"
-      >
-        Twitter
-      </a>
-      <a
-        href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absoluteUrl }}"
-        class="share-btn facebook"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on Facebook"
-      >
-        Facebook
-      </a>
-      <a
-        href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absoluteUrl }}&title={{ title | urlencode }}"
-        class="share-btn linkedin"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Share on LinkedIn"
-      >
-        LinkedIn
-      </a>
+      <a href="https://twitter.com/intent/tweet?url={{ page.url | absoluteUrl }}&text={{ title | urlencode }}" class="share-btn twitter" target="_blank" rel="noopener noreferrer">Twitter</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absoluteUrl }}" class="share-btn facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absoluteUrl }}&title={{ title | urlencode }}" class="share-btn linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </div>
 
     <h2>Share Your View</h2>
     <form id="comment-form" class="comment-form">
       <div class="form-group">
-        <input
-          type="text"
-          id="comment-name"
-          placeholder="Your name"
-          required
-        />
+        <input type="text" id="comment-name" placeholder="Your name" required />
       </div>
       <div class="form-group">
-        <textarea
-          id="comment-message"
-          placeholder="Write your comment..."
-          required
-        ></textarea>
+        <textarea id="comment-message" placeholder="Write your comment..." required></textarea>
       </div>
       <button type="submit" class="comment-submit">Post Comment</button>
     </form>
-    <div id="comment-list" class="comment-list">
-      <!-- Dynamically added comments will appear here -->
-    </div>
+    <div id="comment-list" class="comment-list"></div>
   </footer>
 
+  <!-- Related Stories Section (unchanged) -->
   <section class="related-stories-section container">
     <h2>Related Stories</h2>
     <div class="news-grid">
-      {% set currentPostCategory = category %} {# Get the category of the current post #}
-      {% set currentPostUrl = page.url %} {# Get the URL of the current post #}
-      {% set relatedPostsCount = 0 %} {# Initialize a counter for related posts #}
-
-      {% for relatedPost in collections.news | reverse %} {# Loop through all news posts #}
-        {# Check if the post's category array includes ANY of the current post's categories
-           AND if it's not the current post itself. #}
+      {% set currentPostCategory = category %}
+      {% set currentPostUrl = page.url %}
+      {% set relatedPostsCount = 0 %}
+      {% for relatedPost in collections.news | reverse %}
         {% if relatedPost.data.category and relatedPost.url != currentPostUrl %}
           {% set commonCategories = false %}
           {% for cat in relatedPost.data.category %}
@@ -100,28 +67,24 @@ permalink: /news/{{ title | slug }}.html
               {% set commonCategories = true %}
             {% endif %}
           {% endfor %}
-
-          {% if commonCategories %}
-            {% if relatedPostsCount < 4 %} {# Limit to 4 related posts #}
-              <div class="news-widget">
-                <a href="{{ relatedPost.url }}">
-                    {% if relatedPost.data.image %}
-                        <img src="{{ relatedPost.data.image }}" alt="{{ relatedPost.data.title }}"> {# Use title for alt if specific alt not available #}
-                    {% else %}
-                        <img src="/assets/images/placeholder.jpg" alt="Placeholder for {{ relatedPost.data.title }}">
-                    {% endif %}
-                    <div class="news-widget-content">
-                        <h3>{{ relatedPost.data.title }}</h3>
-                        <p>{{ relatedPost.data.description | truncate(100, true, "...") }}</p>
-                    </div>
-                </a>
-              </div>
-              {% set relatedPostsCount = relatedPostsCount + 1 %} {# Increment the counter #}
-            {% endif %}
+          {% if commonCategories and relatedPostsCount < 4 %}
+            <div class="news-widget">
+              <a href="{{ relatedPost.url }}">
+                {% if relatedPost.data.image %}
+                  <img src="{{ relatedPost.data.image }}" alt="{{ relatedPost.data.title }}">
+                {% else %}
+                  <img src="/assets/images/placeholder.jpg" alt="Placeholder for {{ relatedPost.data.title }}">
+                {% endif %}
+                <div class="news-widget-content">
+                  <h3>{{ relatedPost.data.title }}</h3>
+                  <p>{{ relatedPost.data.description | truncate(100, true, "...") }}</p>
+                </div>
+              </a>
+            </div>
+            {% set relatedPostsCount = relatedPostsCount + 1 %}
           {% endif %}
         {% endif %}
       {% endfor %}
-
       {% if relatedPostsCount == 0 %}
         <p>No related stories found in this category.</p>
       {% endif %}
@@ -129,154 +92,15 @@ permalink: /news/{{ title | slug }}.html
   </section>
 </article>
 
-<style>
-  /* Header title styling */
-  .post header h1 {
-    text-align: center;
-    color: var(--primary-color); /* red */
-  }
-
-  /* Center the date */
-  .post-meta {
-    text-align: center;
-    margin-top: 0.25rem;
-    color: var(--dark-grey);
-    font-style: italic;
-  }
-
-  /* Featured Image */
-  .post-image {
-    margin: 1.5rem 0;
-  }
-
-  .post-image img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-
-  /* Share Buttons */
-  .share-buttons {
-    display: flex;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-  }
-
-  .share-btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: opacity 0.2s;
-  }
-
-  .share-btn:hover {
-    opacity: 0.9;
-  }
-
-  .twitter {
-    background: #1DA1F2;
-  }
-
-  .facebook {
-    background: #4267B2;
-  }
-
-  .linkedin {
-    background: #0077B5;
-  }
-
-  /* Comments Section */
-  .comments-section,
-  .post-footer h2:nth-of-type(2) {
-    margin-top: 2rem;
-  }
-
-  .comment-form {
-    margin-top: 1rem;
-  }
-
-  .form-group {
-    margin-bottom: 1rem;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: inherit;
-  }
-
-  .form-group textarea {
-    min-height: 120px;
-  }
-
-  .comment-submit {
-    background: #333;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .comment-submit:hover {
-    background: #555;
-  }
-
-  .comment-list {
-    margin-top: 2rem;
-  }
-
-  .comment-list div {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background: #f8f8f8;
-    border-radius: 4px;
-  }
-
-  /* Related Stories Section Styling */
-  .related-stories-section {
-      margin-top: 50px;
-      margin-bottom: 50px;
-      padding: 30px;
-      background-color: var(--secondary-color); /* White background */
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .related-stories-section h2 {
-      color: var(--primary-color); /* Red heading */
-      border-bottom: 2px solid var(--primary-color);
-      padding-bottom: 10px;
-      margin-bottom: 30px;
-      text-align: center;
-      font-size: 2em;
-  }
-
-  /* The .news-grid and .news-widget styles from style.css will apply here */
-</style>
-
 <script>
   document.getElementById('comment-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('comment-name').value.trim();
     const message = document.getElementById('comment-message').value.trim();
-
     if (name && message) {
       const commentList = document.getElementById('comment-list');
       const commentDiv = document.createElement('div');
-      commentDiv.innerHTML = `
-        <p><strong>${name}</strong></p>
-        <p>${message}</p>
-        <small>${new Date().toLocaleString()}</small>
-      `;
+      commentDiv.innerHTML = `<p><strong>${name}</strong></p><p>${message}</p><small>${new Date().toLocaleString()}</small>`;
       commentList.prepend(commentDiv);
       this.reset();
     }

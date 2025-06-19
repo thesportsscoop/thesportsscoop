@@ -5,14 +5,17 @@ permalink: /index.html
 ---
 
 <main class="container">
+  <!-- Ezoic Ad Placeholder: Top of homepage (ID: 118) -->
+  <div id="ezoic-pub-ad-placeholder-118" style="margin: 20px 0;"></div>
+
   <h1 class="page-title">Welcome to The Sports Scoop!</h1>
   <p class="page-description">
     Your ultimate source for the freshest sports news, insights, and analysis from across the globe.
     Dive into the latest headlines below:
   </p>
 
-  <!-- Ezoic Ad Placeholder: Homepage mid-content -->
-  <div id="ezoic-pub-ad-placeholder-102" style="margin: 30px 0;"></div>
+  <!-- Ezoic Ad Placeholder: Mid-homepage (ID: 115) -->
+  <div id="ezoic-pub-ad-placeholder-115" style="margin: 30px 0;"></div>
 
   <div class="news-grid">
     {% for post in collections.news | reverse %}
@@ -32,4 +35,13 @@ permalink: /index.html
     </div>
     {% endfor %}
   </div>
+
+  <!-- Ezoic Ad Placeholder: Bottom of homepage (ID: 103) -->
+  <div id="ezoic-pub-ad-placeholder-103" style="margin: 40px 0;"></div>
 </main>
+
+<script>
+  ezstandalone.cmd.push(function () {
+    ezstandalone.showAds(118, 115, 103);
+  });
+</script>

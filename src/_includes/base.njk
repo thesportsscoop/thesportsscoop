@@ -1,24 +1,47 @@
+Thanks for sharing your `base.njk` layout file!
+
+I’ll now correctly insert the **Ezoic Privacy Scripts** and **Ezoic Header Script** **at the very top of the `<head>`** section, exactly as per Ezoic’s integration instructions.
+
+---
+
+### ✅ Updated `base.njk` with Ezoic Scripts Inserted
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Ezoic Privacy Scripts (MUST come first) -->
+    <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
+    <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
+
+    <!-- Ezoic Header Script (Load Immediately After Privacy Scripts) -->
+    <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+    <script>
+        window.ezstandalone = window.ezstandalone || {};
+        ezstandalone.cmd = ezstandalone.cmd || [];
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }} - The Sports Scoop</title>
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" href="/assets/img/favicon.png" type="image/png">
+
     <!-- Font Awesome for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK0L8P5WQM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK0L8P5WQM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    </script>
+
     <!-- Google AdSense Code -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9374407582799127"
-          crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
     <!-- End Google AdSense Code -->
-
 </head>
 <body>
     {% include "header.njk" %}
@@ -29,3 +52,20 @@
     <script src="/assets/js/main.js"></script>
 </body>
 </html>
+```
+
+---
+
+### ✅ What You Should Do Now:
+
+1. **Replace** your current `base.njk` with this updated version.
+2. **Run/Build your Eleventy site locally** or push to your deployment platform (e.g., Netlify).
+3. Visit your homepage and:
+
+   * Make sure the site loads without errors.
+   * Check browser console for any red flags.
+   * You can verify the Ezoic script is active using browser DevTools → Network tab → look for requests to `ezoic.com`.
+
+---
+
+Would you like help now with **Step 2: ads.txt setup** or inserting **ad placements** into pages?

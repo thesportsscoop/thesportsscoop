@@ -4,7 +4,7 @@ module.exports = function(eleventyConfig) {
   // Pass-through files
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/admin");
-  eleventyConfig.addPassthroughCopy("src/ads.txt"); // Pass through ads.txt
+  eleventyConfig.addPassthroughCopy("_redirects");
   eleventyConfig.addPassthroughCopy("src/google106c937e23b2632b.html"); // Google site verification file
   eleventyConfig.addPassthroughCopy("robots.txt"); // 👈 important
 

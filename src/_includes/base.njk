@@ -38,17 +38,26 @@
 
   {% include "header.njk" %}
 
-  <!-- Ezoic Placeholder: top of page -->
-  <div id="ezoic-pub-ad-placeholder-100" style="margin: 20px 0;"></div>
+  <!-- Ezoic Placeholder: Top Banner Ad (ID: 118) -->
+  <div id="ezoic-pub-ad-placeholder-118" style="margin: 20px 0;"></div>
 
   <main>
     {{ content | safe }}
+
+    <!-- Ezoic Placeholder: In-Content Ad (ID: 115) -->
+    <div id="ezoic-pub-ad-placeholder-115" style="margin: 40px 0;"></div>
   </main>
 
-  <!-- Ezoic Placeholder: bottom of page -->
-  <div id="ezoic-pub-ad-placeholder-101" style="margin: 20px 0;"></div>
+  <!-- Ezoic Placeholder: Bottom of Page Ad (ID: 103) -->
+  <div id="ezoic-pub-ad-placeholder-103" style="margin: 40px 0;"></div>
 
   {% include "footer.njk" %}
+
+  <script>
+    ezstandalone.cmd.push(function () {
+      ezstandalone.showAds(118, 115, 103);
+    });
+  </script>
 
   <script src="/assets/js/main.js"></script>
 </body>

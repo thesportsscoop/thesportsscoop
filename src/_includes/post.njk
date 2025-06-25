@@ -40,6 +40,14 @@
   <div id="ezoic-pub-ad-placeholder-118" style="margin: 20px 0;"></div>
 
   <main class="post-content">
+
+    <!-- ✅ Featured Image (if provided in front matter) -->
+    {% if image %}
+      <div class="featured-image-container" style="text-align:center; margin-bottom: 20px;">
+        <img src="{{ image }}" alt="{{ title }}" class="featured-image" style="max-width: 100%; height: auto; border-radius: 8px;">
+      </div>
+    {% endif %}
+
     <!-- Ezoic Placeholder: Pre-Content (ID: 114) -->
     <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
 

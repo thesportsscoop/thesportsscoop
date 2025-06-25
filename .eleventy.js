@@ -6,6 +6,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.addPassthroughCopy("_redirects");
   eleventyConfig.addPassthroughCopy("src/google106c937e23b2632b.html"); // Google site verification file
+  eleventyConfig.addPassthroughCopy("sw.js")
   eleventyConfig.addPassthroughCopy("robots.txt"); // 👈 important
 
    // Add a custom collection for news posts

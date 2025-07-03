@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <!-- Custom Popunder Scripts -->
   <script>
     (function(d,z,s){
@@ -38,6 +37,23 @@
   <link rel="icon" href="/assets/img/favicon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+  <!-- Custom style for responsive featured image -->
+  <style>
+    .featured-image-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .featured-image {
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK0L8P5WQM"></script>
   <script>
@@ -61,8 +77,8 @@
 
     <!-- Featured Image -->
     {% if image %}
-      <div class="featured-image-container" style="text-align:center; margin-bottom: 20px;">
-        <img src="{{ image }}" alt="{{ title }}" class="featured-image" style="max-width: 100%; height: auto; border-radius: 8px;">
+      <div class="featured-image-container">
+        <img src="{{ image }}" alt="{{ title }}" class="featured-image">
       </div>
     {% endif %}
 

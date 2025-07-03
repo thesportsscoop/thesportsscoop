@@ -1,110 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <!-- Custom Popunder Scripts -->
-  <script>
-    (function(d,z,s){
-      s.src='https://'+d+'/400/'+z;
-      try{ (document.body || document.documentElement).appendChild(s) }
-      catch(e){}
-    })('vemtoutcheeg.com', 9488588, document.createElement('script'));
-  </script>
+<main class="post-layout" style="display: flex; flex-wrap: wrap; gap: 30px;">
 
-  <script>
-    (function(d,z,s){
-      s.src='https://'+d+'/400/'+z;
-      try{ (document.body || document.documentElement).appendChild(s) }
-      catch(e){}
-    })('vemtoutcheeg.com', 9488646, document.createElement('script'));
-  </script>
-
-  <!-- Ezoic Privacy Scripts -->
-  <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
-  <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
-
-  <!-- Ezoic Header Script -->
-  <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
-  <script>
-    window.ezstandalone = window.ezstandalone || {};
-    ezstandalone.cmd = ezstandalone.cmd || [];
-  </script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }} - The Sports Scoop</title>
-
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="icon" href="/assets/img/favicon.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-  <!-- Custom style for responsive featured image -->
-  <style>
-    .featured-image-container {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .featured-image {
-      width: 50%;
-      max-width: 200px;
-      aspect-ratio: 16 / 10;
-      object-fit: cover;
-      border-radius: 8px;
-      display: block;
-      margin: 0 auto;
-    }
-  </style>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK0L8P5WQM"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-ZK0L8P5WQM');
-  </script>
-
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9374407582799127" crossorigin="anonymous"></script>
-</head>
-<body>
-
-  {% include "header.njk" %}
-
-  <!-- Ezoic Placeholder: Top Banner (ID: 118) -->
-  <div id="ezoic-pub-ad-placeholder-118" style="margin: 20px 0;"></div>
-
-  <main class="post-content">
-
-    <!-- Featured Image -->
+  <!-- Main Post Content -->
+  <article class="main-post" style="flex: 1 1 65%;">
     {% if image %}
       <div class="featured-image-container">
         <img src="{{ image }}" alt="{{ title }}" class="featured-image">
       </div>
     {% endif %}
 
-    <!-- Ezoic Placeholder: Pre-Content (ID: 114) -->
+    <!-- Pre-content ad -->
     <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
 
     {{ content | safe }}
 
-    <!-- Ezoic Placeholder: Mid-Content (ID: 110) -->
+    <!-- Mid/post-content ads -->
     <div id="ezoic-pub-ad-placeholder-110" style="margin: 40px 0;"></div>
-
-    <!-- Ezoic Placeholder: Post-Content (Another 114) -->
     <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
-  </main>
+  </article>
 
-  <!-- Ezoic Placeholder: Bottom Ad (ID: 103) -->
-  <div id="ezoic-pub-ad-placeholder-103" style="margin: 40px 0;"></div>
-
-  {% include "footer.njk" %}
-
-  <script>
-    ezstandalone.cmd.push(function () {
-      ezstandalone.showAds(114, 118, 103, 110);
-    });
-  </script>
-
-  <script src="/assets/js/main.js"></script>
-</body>
-</html>
+  <!-- Sidebar with Related Posts -->
+  <aside class="related-sidebar" style="flex: 1 1 30%;">
+    <h3 style="border-bottom: 2px solid #ddd; padding-bottom: 10px;">Related Posts</h3>
+    {% set tag = (tags | first) %}
+    {% set relatedPosts = collections.posts | rejectattr("url", "equalto", page.url) | selectattr("data.tags", "contains", tag) | slice(0, 3) %}
+    {% if relatedPosts.length %}
+      <div class="related-sidebar-posts">
+        {% for post in relatedPosts %}
+          <div class="related-post-card" style="margin-bottom: 20px;">
+            <a href="{{ post.url }}" style="text-decoration: none; color: inherit;">
+              {% if post.data.image %}
+                <img src="{{ post.data.image }}" alt="{{ post.data.title }}" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px; margin-bottom: 8px;">
+              {% endif %}
+              <h4 style="font-size: 1rem;">{{ post.data.title }}</h4>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No related posts found.</p>
+    {% endif %}
+  </aside>
+</main>

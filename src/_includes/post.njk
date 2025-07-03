@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Popunder Scripts -->
+  <!-- Custom Popunder Scripts -->
   <script>
     (function(d,z,s){
       s.src='https://'+d+'/400/'+z;
@@ -9,6 +9,7 @@
       catch(e){}
     })('vemtoutcheeg.com', 9488588, document.createElement('script'));
   </script>
+
   <script>
     (function(d,z,s){
       s.src='https://'+d+'/400/'+z;
@@ -17,9 +18,11 @@
     })('vemtoutcheeg.com', 9488646, document.createElement('script'));
   </script>
 
-  <!-- Ezoic -->
+  <!-- Ezoic Privacy Scripts -->
   <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
   <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
+
+  <!-- Ezoic Header Script -->
   <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
   <script>
     window.ezstandalone = window.ezstandalone || {};
@@ -34,41 +37,20 @@
   <link rel="icon" href="/assets/img/favicon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <!-- Custom Responsive Featured Image -->
+  <!-- Custom style for responsive featured image -->
   <style>
     .featured-image-container {
       text-align: center;
       margin-bottom: 20px;
     }
     .featured-image {
-      width: 100%;
-      max-width: 350px;
+      width: 50%;
+      max-width: 200px;
       aspect-ratio: 16 / 10;
       object-fit: cover;
       border-radius: 8px;
       display: block;
       margin: 0 auto;
-    }
-
-    .related-posts {
-      margin-top: 40px;
-      border-top: 1px solid #ccc;
-      padding-top: 20px;
-    }
-    .related-posts h3 {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-    }
-    .related-posts ul {
-      list-style: none;
-      padding: 0;
-    }
-    .related-posts li {
-      margin-bottom: 10px;
-    }
-    .related-posts a {
-      text-decoration: none;
-      color: #007acc;
     }
   </style>
 
@@ -88,7 +70,7 @@
 
   {% include "header.njk" %}
 
-  <!-- Top Ad Placeholder -->
+  <!-- Ezoic Placeholder: Top Banner (ID: 118) -->
   <div id="ezoic-pub-ad-placeholder-118" style="margin: 20px 0;"></div>
 
   <main class="post-content">
@@ -100,47 +82,19 @@
       </div>
     {% endif %}
 
-    <!-- Ad Placeholder -->
+    <!-- Ezoic Placeholder: Pre-Content (ID: 114) -->
     <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
 
-    <!-- Main Content -->
     {{ content | safe }}
 
-    <!-- Mid Content Ad -->
+    <!-- Ezoic Placeholder: Mid-Content (ID: 110) -->
     <div id="ezoic-pub-ad-placeholder-110" style="margin: 40px 0;"></div>
 
-    <!-- Related Posts Section -->
-    {% set fallbackTag = "football" %}
-    {% if tags and tags.length > 0 %}
-      {% set firstTag = tags[0] %}
-    {% else %}
-      {% set firstTag = fallbackTag %}
-    {% endif %}
-
-    {% set relatedPosts = (
-      collections.posts
-        | rejectattr("url", "equalto", page.url)
-        | selectattr("data.tags", "contains", firstTag)
-        | slice(0, 3)
-    ) %}
-
-    {% if relatedPosts.length > 0 %}
-      <div class="related-posts">
-        <h3>Related Posts</h3>
-        <ul>
-          {% for post in relatedPosts %}
-            <li><a href="{{ post.url }}">{{ post.data.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-
-    <!-- Post Content Ad -->
+    <!-- Ezoic Placeholder: Post-Content (Another 114) -->
     <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
-
   </main>
 
-  <!-- Bottom Ad -->
+  <!-- Ezoic Placeholder: Bottom Ad (ID: 103) -->
   <div id="ezoic-pub-ad-placeholder-103" style="margin: 40px 0;"></div>
 
   {% include "footer.njk" %}

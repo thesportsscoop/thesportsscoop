@@ -1,22 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Custom Popunder Scripts -->
-  <script>
-    (function(d,z,s){
-      s.src='https://'+d+'/400/'+z;
-      try{ (document.body || document.documentElement).appendChild(s) }
-      catch(e){}
-    })('vemtoutcheeg.com', 9488588, document.createElement('script'));
-  </script>
-
-  <script>
-    (function(d,z,s){
-      s.src='https://'+d+'/400/'+z;
-      try{ (document.body || document.documentElement).appendChild(s) }
-      catch(e){}
-    })('vemtoutcheeg.com', 9488646, document.createElement('script'));
-  </script>
 
   <!-- Ezoic Privacy Scripts -->
   <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
@@ -93,6 +77,51 @@
     <!-- Ezoic Placeholder: Post-Content (Another 114) -->
     <div id="ezoic-pub-ad-placeholder-114" style="margin: 30px 0;"></div>
   </main>
+
+  <!-- Social Sharing Buttons -->
+  <div class="social-sharing" style="text-align: center; margin: 30px 0;">
+    <h3>Share this post</h3>
+    <div class="share-buttons" style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | url | absoluteUrl }}" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="share-button facebook"
+         style="background: #3b5998; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none;">
+        <i class="fab fa-facebook"></i> Share
+      </a>
+      
+      <!-- Twitter -->
+      <a href="https://twitter.com/intent/tweet?url={{ page.url | url | absoluteUrl }}&text={{ title | urlencode }}" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="share-button twitter"
+         style="background: #1DA1F2; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none;">
+        <i class="fab fa-twitter"></i> Tweet
+      </a>
+      
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url | url | absoluteUrl }}" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="share-button linkedin"
+         style="background: #0077B5; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none;">
+        <i class="fab fa-linkedin"></i> Share
+      </a>
+    </div>
+  </div>
+
+  <!-- Comment Section -->
+  <div id="disqus_thread" style="max-width: 800px; margin: 0 auto; padding: 0 20px;"></div>
+  <script>
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://thesportsscoop.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
   <!-- Ezoic Placeholder: Bottom Ad (ID: 103) -->
   <div id="ezoic-pub-ad-placeholder-103" style="margin: 40px 0;"></div>

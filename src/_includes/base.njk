@@ -1,35 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <!-- Custom Popunder Scripts -->
-  <script>
-    (function(d,z,s){
-      s.src='https://'+d+'/400/'+z;
-      try{ (document.body || document.documentElement).appendChild(s) }
-      catch(e){}
-    })('vemtoutcheeg.com', 9488588, document.createElement('script'));
-  </script>
-
-  <script>
-    (function(d,z,s){
-      s.src='https://'+d+'/400/'+z;
-      try{ (document.body || document.documentElement).appendChild(s) }
-      catch(e){}
-    })('vemtoutcheeg.com', 9488646, document.createElement('script'));
-  </script>
-
-  <!-- Ezoic Privacy Scripts (MUST come first) -->
-  <script src="https://cmp.gatekeeperconsent.com/min.js" data-cfasync="false"></script>
-  <script src="https://the.gatekeeperconsent.com/cmp.min.js" data-cfasync="false"></script>
-
-  <!-- Ezoic Header Script -->
-  <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
-  <script>
-    window.ezstandalone = window.ezstandalone || {};
-    ezstandalone.cmd = ezstandalone.cmd || [];
-  </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title }} - The Sports Scoop</title>
@@ -47,33 +18,17 @@
     gtag('config', 'G-ZK0L8P5WQM');
   </script>
 
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9374407582799127" crossorigin="anonymous"></script>
+
 </head>
 <body>
 
   {% include "header.njk" %}
 
-  <!-- Ezoic Placeholder: Top Banner Ad (ID: 118) -->
-  <div id="ezoic-pub-ad-placeholder-118" style="margin: 20px 0;"></div>
-
   <main>
     {{ content | safe }}
-
-    <!-- Ezoic Placeholder: In-Content Ad (ID: 115) -->
-    <div id="ezoic-pub-ad-placeholder-115" style="margin: 40px 0;"></div>
   </main>
 
-  <!-- Ezoic Placeholder: Bottom of Page Ad (ID: 103) -->
-  <div id="ezoic-pub-ad-placeholder-103" style="margin: 40px 0;"></div>
-
   {% include "footer.njk" %}
-
-  <script>
-    ezstandalone.cmd.push(function () {
-      ezstandalone.showAds(118, 115, 103);
-    });
-  </script>
 
   <script src="/assets/js/main.js"></script>
 </body>
